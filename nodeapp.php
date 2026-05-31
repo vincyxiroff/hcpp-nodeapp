@@ -24,6 +24,14 @@ if ( ! class_exists( 'NodeApp') ) {
             $user = $parse[2];
             $domain = $parse[4];
 
+            // Ensure ports directory exists for this user
+            $ports_dir = "/usr/local/hestia/data/hcpp/ports/$user";
+            if ( ! is_dir( $ports_dir ) ) {
+                $hcpp->log( "allocate_ports: creating ports dir $ports_dir" );
+                // Attempt to create directory and set ownership; ignore failures
+                $hcpp->run( "mkdir -p $ports_dir && chown -R admin:admin /usr/local/hestia/data/hcpp/ports || true" );
+            }
+
             // Wipe the existing ports for this domain
             if ( file_exists( "/usr/local/hestia/data/hcpp/ports/$user/$domain.ports" ) ) {
                 unlink( "/usr/local/hestia/data/hcpp/ports/$user/$domain.ports" );
