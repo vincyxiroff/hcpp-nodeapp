@@ -854,7 +854,11 @@ if ( ! class_exists( 'NodeApp') ) {
             $domain = $args[1];
             $nodeapp_folder = "/home/$user/web/$domain/nodeapp";
             if ( is_dir( $nodeapp_folder) ) {
-                $this->generate_nginx_files( $nodeapp_folder, true );
+                $proxy = $hcpp->run("v-list-web-domain $user $domain json");
+                if ( $proxy != NULL ) {
+                    $proxy = $proxy[$domain]["PROXY"];
+                    $this->generate_nginx_files( $nodeapp_folder, ( $proxy == "NodeApp" ) );
+                }
             }
         }
 
