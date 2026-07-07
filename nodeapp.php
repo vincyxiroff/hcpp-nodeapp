@@ -410,7 +410,7 @@ if ( ! class_exists( 'NodeApp') ) {
             foreach( $installed as $version ) {
               $versions[] = [
                 'installed' => $version,
-                'latest' => $latest[$i]
+                'latest' => $latest[$i] ?? $version
               ];
               $i++;
             }
